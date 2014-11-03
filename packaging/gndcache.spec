@@ -1,6 +1,6 @@
 Summary:     A cache for GND XML.
 Name:       gndcache
-Version:    1.0.0
+Version:    1.0.1
 Release:    0
 License:    GPLv3
 BuildArch:  x86_64
