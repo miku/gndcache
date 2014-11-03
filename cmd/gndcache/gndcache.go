@@ -88,11 +88,17 @@ func main() {
 			}
 			url := fmt.Sprintf("http://d-nb.info/gnd/%s/about/rdf", vars["gnd"])
 			resp, err := http.Get(url)
+			defer resp.Body.Close()
+			b, err := ioutil.ReadAll(resp.Body)
 			if err != nil {
+				log.Fatal(err)
+			}
+			if resp.StatusCode != 200 {
+				w.WriteHeader(resp.StatusCode)
+				w.Write([]byte(fmt.Sprintf("%d %s\n", resp.StatusCode, http.StatusText(resp.StatusCode))))
+			} else if err != nil {
 				http.NotFound(w, r)
 			} else {
-				defer resp.Body.Close()
-				b, err := ioutil.ReadAll(resp.Body)
 				tx, err := db.Begin()
 				if err != nil {
 					log.Fatal(err)
