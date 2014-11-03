@@ -31,5 +31,3 @@ NOTES.md
 debian/gndcache/usr
 debian/gndcache_*deb
 
-# executables
-gndcache
