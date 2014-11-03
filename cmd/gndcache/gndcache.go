@@ -60,7 +60,6 @@ func main() {
 		if err != nil {
 			log.Fatalf("%q: %s\n", err, s)
 		}
-		log.Printf("database at %s\n", *path)
 	}
 
 	init()
@@ -117,5 +116,6 @@ func main() {
 	}).Methods("GET")
 
 	http.Handle("/", r)
+	log.Printf("db at %s, listening on %s\n", *path, *addr)
 	log.Fatal(http.ListenAndServe(*addr, nil))
 }
