@@ -52,14 +52,13 @@ func main() {
 	}
 	defer db.Close()
 
-	init := func() {
-		s := `CREATE TABLE IF NOT EXISTS gnd (id text PRIMARY KEY,
-						content blob,
-						updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
-		_, err = db.Exec(s)
-		if err != nil {
-			log.Fatalf("%q: %s\n", err, s)
-		}
+	// make sure we have a db to begin with
+	s := `CREATE TABLE IF NOT EXISTS gnd (id text PRIMARY KEY,
+					content blob,
+					updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)`
+	_, err = db.Exec(s)
+	if err != nil {
+		log.Fatalf("%q: %s\n", err, s)
 	}
 
 	init()
