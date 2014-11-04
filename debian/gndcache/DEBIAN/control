@@ -1,5 +1,5 @@
 Package: gndcache
-Version: 1.1.1
+Version: 1.1.2
 Section: utils
 Priority: optional
 Architecture: amd64
