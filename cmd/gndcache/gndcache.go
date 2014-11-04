@@ -44,6 +44,7 @@ func addNamespaces(s string) string {
 	for k, v := range namespaces {
 		buffer.WriteString(fmt.Sprintf("xmlns:%s=\"%s\"\n", k, v))
 	}
+	buffer.WriteString(">")
 	buffer.WriteString(s)
 	buffer.WriteString("\n</rdf:RDF>")
 	return buffer.String()
