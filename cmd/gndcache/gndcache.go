@@ -27,7 +27,7 @@ func addNamespaces(s string) string {
 		"dc":       "http://purl.org/dc/elements/1.1/",
 		"dcterms":  "http://purl.org/dc/terms/",
 		"foaf":     "http://xmlns.com/foaf/0.1/",
-		"gnd":      "http://d-nb.info/standards/elementset/gnd#",
+		"gndo":     "http://d-nb.info/standards/elementset/gnd#",
 		"isbd":     "http://iflastandards.info/ns/isbd/elements/",
 		"lib":      "http://purl.org/library/",
 		"marcRole": "http://id.loc.gov/vocabulary/relators/",
