@@ -4,6 +4,7 @@
 package main
 
 import (
+	"bytes"
 	"database/sql"
 	"encoding/json"
 	"flag"
@@ -18,6 +19,35 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/miku/gndcache"
 )
+
+// addNamespaces add
+func addNamespaces(s string) string {
+	namespaces := map[string]string{
+		"bibo":     "http://purl.org/ontology/bibo/",
+		"dc":       "http://purl.org/dc/elements/1.1/",
+		"dcterms":  "http://purl.org/dc/terms/",
+		"foaf":     "http://xmlns.com/foaf/0.1/",
+		"gnd":      "http://d-nb.info/standards/elementset/gnd#",
+		"isbd":     "http://iflastandards.info/ns/isbd/elements/",
+		"lib":      "http://purl.org/library/",
+		"marcRole": "http://id.loc.gov/vocabulary/relators/",
+		"owl":      "http://www.w3.org/2002/07/owl#",
+		"rda":      "http://rdvocab.info/",
+		"rdf":      "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+		"rdfs":     "http://www.w3.org/2000/01/rdf-schema#",
+		"skos":     "http://www.w3.org/2004/02/skos/core#",
+		"umbel":    "http://umbel.org/umbel#",
+	}
+
+	var buffer bytes.Buffer
+	buffer.WriteString("<rdf:RDF\n")
+	for k, v := range namespaces {
+		buffer.WriteString(fmt.Sprintf("xmlns:%s=\"%s\"\n", k, v))
+	}
+	buffer.WriteString(s)
+	buffer.WriteString("\n</rdf:RDF>")
+	return buffer.String()
+}
 
 func main() {
 	path := flag.String("dbpath", "", "path to sqlite3 database")
@@ -61,8 +91,6 @@ func main() {
 		log.Fatalf("%q: %s\n", err, s)
 	}
 
-	init()
-
 	stmt, err := db.Prepare("select content from gnd where id = ?")
 	defer stmt.Close()
 
@@ -103,12 +131,8 @@ func main() {
 					log.Fatal(err)
 				}
 				_, err = ins.Exec(vars["gnd"], string(b))
-				if err == nil {
-					fmt.Fprintf(w, string(b))
-					return
-				}
 				tx.Commit()
-				fmt.Fprintf(w, string(b))
+				fmt.Fprintf(w, addNamespaces(string(b)))
 			}
 		}
 	}).Methods("GET")
