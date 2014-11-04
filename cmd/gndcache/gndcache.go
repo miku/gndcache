@@ -111,7 +111,7 @@ func main() {
 			var content string
 			err = stmt.QueryRow(vars["gnd"]).Scan(&content)
 			if err == nil {
-				fmt.Fprintf(w, content)
+				fmt.Fprintf(w, addNamespaces(content))
 				return
 			}
 			url := fmt.Sprintf("http://d-nb.info/gnd/%s/about/rdf", vars["gnd"])
