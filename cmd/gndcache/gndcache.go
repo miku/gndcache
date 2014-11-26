@@ -111,7 +111,10 @@ func main() {
 			var content string
 			err = stmt.QueryRow(vars["gnd"]).Scan(&content)
 			if err == nil {
-				fmt.Fprintf(w, addNamespaces(content))
+				if err != nil {
+					log.Fatal(err)
+				}
+				fmt.Fprint(w, addNamespaces(content))
 				return
 			}
 			url := fmt.Sprintf("http://d-nb.info/gnd/%s/about/rdf", vars["gnd"])
@@ -131,9 +134,12 @@ func main() {
 				if err != nil {
 					log.Fatal(err)
 				}
+				if err != nil {
+					log.Fatal(err)
+				}
 				_, err = ins.Exec(vars["gnd"], string(b))
 				tx.Commit()
-				fmt.Fprintf(w, addNamespaces(string(b)))
+				fmt.Fprint(w, addNamespaces(string(b)))
 			}
 		}
 	}).Methods("GET")
