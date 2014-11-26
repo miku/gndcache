@@ -111,9 +111,6 @@ func main() {
 			var content string
 			err = stmt.QueryRow(vars["gnd"]).Scan(&content)
 			if err == nil {
-				if err != nil {
-					log.Fatal(err)
-				}
 				fmt.Fprint(w, addNamespaces(content))
 				return
 			}
